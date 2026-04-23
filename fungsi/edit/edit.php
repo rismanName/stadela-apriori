@@ -113,21 +113,6 @@ if (!empty($_SESSION['user'])) {
         echo '<script>window.location="../../index.php?page=pengaturan&success=edit-data"</script>';
     }
 
-    if (get_get_param('kategori') !== '') {
-        $nama = get_post_string('kategori');
-        $id = get_post_string('id');
-        if ($id === '' || !ctype_digit($id)) {
-            echo '<script>alert("Data kategori tidak valid");history.go(-1);</script>';
-            exit;
-        }
-
-        $data = [$nama, $id];
-        $sql = 'UPDATE kategori SET  nama_kategori=? WHERE id_kategori=?';
-        $row = $config->prepare($sql);
-        $row->execute($data);
-        echo '<script>window.location="../../index.php?page=kategori&uid='.$id.'&success-edit=edit-data"</script>';
-    }
-
     if (get_get_param('stok') !== '') {
         $restok = get_post_int('restok');
         $id = get_post_string('id');

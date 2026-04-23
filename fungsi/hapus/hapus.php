@@ -40,19 +40,6 @@ if (!empty($_SESSION['user'])) {
         }
     }
 
-    if (get_get_param('kategori') !== '') {
-        $id = get_get_param('id');
-        if ($id === '' || !ctype_digit($id)) {
-            echo '<script>alert("Data kategori tidak valid");history.go(-1);</script>';
-            exit;
-        }
-
-        $sql = 'DELETE FROM kategori WHERE id_kategori=?';
-        $row = $config->prepare($sql);
-        $row->execute([$id]);
-        echo '<script>window.location="../../index.php?page=kategori&&remove=hapus-data"</script>';
-    }
-
     if (get_get_param('barang') !== '') {
         $id = get_get_param('id');
         if ($id === '' || !preg_match('/^[A-Za-z0-9-]+$/', $id)) {

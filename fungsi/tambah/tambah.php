@@ -74,21 +74,6 @@ if (!empty($_SESSION['user'])) {
         }
     }
 
-    $kategoriAction = get_get_param('kategori');
-    if ($kategoriAction !== '') {
-        $nama = get_post_string('kategori');
-        if ($nama === '') {
-            echo '<script>alert("Kategori tidak valid");history.go(-1);</script>';
-            exit;
-        }
-
-        $data = [$nama];
-        $sql = 'INSERT INTO kategori (nama_kategori,tgl_input) VALUES(?,NOW())';
-        $row = $config->prepare($sql);
-        $row->execute($data);
-        echo '<script>window.location="../../index.php?page=kategori&&success=tambah-data"</script>';
-    }
-
     $barangAction = get_get_param('barang');
     if ($barangAction !== '') {
         $id = get_post_string('id');

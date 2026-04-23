@@ -62,7 +62,7 @@ $showRemove      = is_string(filter_input(INPUT_GET, 'remove',       FILTER_UNSA
                             Edit
                         </button>
                         <!-- Hapus: tetap pakai hapus.php seperti aslinya -->
-                        <a href="fungsi/hapus/hapus.php?kategori=hapus&id=<?= urlencode($isi['id_kategori']); ?>&csrf_token=<?= urlencode(csrf_get_token()); ?>"
+                        <a href="admin/module/kategori/hapus.php?id=<?= urlencode($isi['id_kategori']); ?>&csrf_token=<?= urlencode(csrf_get_token()); ?>"
                             onclick="return confirm('Hapus Data Kategori ?');">
                             <button class="btn btn-danger btn-sm">Hapus</button>
                         </a>
@@ -82,7 +82,7 @@ $showRemove      = is_string(filter_input(INPUT_GET, 'remove',       FILTER_UNSA
                 <h5 class="modal-title"><i class="fa fa-plus mr-2"></i>Tambah Kategori</h5>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <form method="POST" action="fungsi/tambah/tambah.php?kategori=tambah">
+            <form method="POST" action="admin/module/kategori/tambah.php">
                 <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <div class="form-group mb-0">
@@ -111,7 +111,7 @@ $showRemove      = is_string(filter_input(INPUT_GET, 'remove',       FILTER_UNSA
                 <h5 class="modal-title"><i class="fa fa-edit mr-2"></i>Edit Kategori</h5>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <form method="POST" action="fungsi/edit/edit.php?kategori=edit">
+            <form method="POST" action="admin/module/kategori/ubah.php">
                 <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <div class="form-group mb-0">
