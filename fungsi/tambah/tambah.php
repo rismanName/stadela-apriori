@@ -82,9 +82,8 @@ if (!empty($_SESSION['user'])) {
             exit;
         }
 
-        $tgl = date('j F Y, G:i');
-        $data = [$nama, $tgl];
-        $sql = 'INSERT INTO kategori (nama_kategori,tgl_input) VALUES(?,?)';
+        $data = [$nama];
+        $sql = 'INSERT INTO kategori (nama_kategori,tgl_input) VALUES(?,NOW())';
         $row = $config->prepare($sql);
         $row->execute($data);
         echo '<script>window.location="../../index.php?page=kategori&&success=tambah-data"</script>';
