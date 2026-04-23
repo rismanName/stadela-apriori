@@ -1,17 +1,25 @@
 <?php
-$successParam = filter_input(INPUT_GET, 'success', FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_NO_ENCODE_QUOTES]);
-$showSuccess = is_string($successParam) && $successParam !== '';
+$showSuccessEdit = is_string(filter_input(INPUT_GET, 'success-edit', FILTER_UNSAFE_RAW)) && filter_input(INPUT_GET, 'success-edit', FILTER_UNSAFE_RAW) !== '';
 ?>
-<h4>Pengaturan Toko</h4>
+<h4>Toko</h4>
 <br>
-<?php if($showSuccess){?>
-<div class="alert alert-success">
-	<p>Ubah Data Berhasil !</p>
-</div>
+
+<?php if($showSuccessEdit){?>
+<div class="alert alert-success"><p>Ubah Data Berhasil !</p></div>
 <?php }?>
+
+<?php if($showSuccessEdit){ ?>
+<script>
+    history.replaceState(null, '', '?page=pengaturan/toko');
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(el => $(el).alert('close'));
+    }, 3000);
+</script>
+<?php } ?>
+
 <div class="card">
 	<div class="card-body">
-                <form method="post" action="fungsi/edit/edit.php?pengaturan=ubah">
+                <form method="post" action="admin/module/pengaturan/toko/ubah.php">
                         <?php echo csrf_field(); ?>
 			<div class="row">
 				<div class="col-md 6">
@@ -39,7 +47,7 @@ $showSuccess = is_string($successParam) && $successParam !== '';
 					</div>
 				</div>
 			</div>
-			<button id="tombol-simpan" class="btn btn-primary"><i class="fas fa-edit"></i> Update Data</button>
+			<button id="tombol-simpan" class="btn btn-primary"><i class="fas fa-edit"></i> Ubah Data</button>
 		</form>
 	</div>
 </div>

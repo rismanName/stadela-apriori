@@ -264,10 +264,19 @@ if (!empty($_SESSION['user'])) {
         $user = get_post_string('username');
         $pass = get_post_string('pass');
 
-        $data = [$user, $pass, $id];
-        $sql = 'UPDATE users SET username=?,password=md5(?) WHERE id_user=?';
+        if (!empty($pass)) {
+            $hash = password_hash($pass, PASSWORD_DEFAULT);
+
+            $sql = 'UPDATE users SET username=?, password=? WHERE id_user=?';
+            $data = [$user, $hash, $id];
+        } else {
+            $sql = 'UPDATE users SET username=? WHERE id_user=?';
+            $data = [$user, $id];
+        }
+
         $row = $config->prepare($sql);
         $row->execute($data);
+
         echo '<script>window.location="../../index.php?page=user&success=edit-data"</script>';
     }
 

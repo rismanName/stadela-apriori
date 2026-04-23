@@ -8,7 +8,7 @@ class view
     }
 
     // =================== USERS ===================
-    public function member()
+    public function user()
     {
         $sql = "SELECT * FROM users";
         $row = $this->db->prepare($sql);
@@ -16,7 +16,7 @@ class view
         return $row->fetchAll();
     }
 
-    public function member_edit($id)
+    public function user_edit($id)
     {
         $sql = "SELECT * FROM users WHERE id_user = ?";
         $row = $this->db->prepare($sql);

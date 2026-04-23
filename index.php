@@ -24,14 +24,15 @@
                 'penjualan/import',
                 'apriori',
                 'laporan',
-                'pengaturan',
-                'user',
+                'pengaturan/toko',
+                'pengaturan/user',
+                'profil',
             ],
             'kasir' => [
                 'dashboard',
                 'transaksi',
                 'transaksi/riwayat',
-                'user',
+                'profil',
             ],
         ];
 

@@ -1,6 +1,6 @@
 <?php
         $id = $_SESSION['user']['id_user'];
-        $hasil = $lihat -> member_edit($id);
+        $hasil = $lihat -> user_edit($id);
         $successParam = filter_input(INPUT_GET, 'success', FILTER_UNSAFE_RAW, ['flags' => FILTER_FLAG_NO_ENCODE_QUOTES]);
         $showSuccess = is_string($successParam) && $successParam !== '';
 

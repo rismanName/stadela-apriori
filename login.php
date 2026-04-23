@@ -2,23 +2,24 @@
   @ob_start();
   session_start();
   if(isset($_POST['proses'])){
-    require 'config.php';
+      require 'config.php';
 
-		$username = strip_tags($_POST['username']);
-    $password = strip_tags($_POST['password']);
+      $username = trim($_POST['username']);
+      $password = trim($_POST['password']);
 
-    $sql = 'SELECT * FROM users WHERE username = ? AND password = MD5(?)';
+      $sql = 'SELECT * FROM users WHERE username = ?';
+      $row = $config->prepare($sql);
+      $row->execute([$username]);
 
-    $row = $config->prepare($sql);
-    $row->execute([$username, $password]);
+      $user = $row->fetch();
 
-    if($row->rowCount() > 0){
-      $hasil = $row->fetch();
-      $_SESSION['user'] = $hasil;
-      echo '<script>alert("Login Sukses");window.location="index.php"</script>';
-    } else {
-      echo '<script>alert("Login Gagal");history.go(-1);</script>';
-    }
+      if($user && password_verify($password, $user['password'])){
+          $_SESSION['user'] = $user;
+
+          echo '<script>alert("Login Sukses");window.location="index.php"</script>';
+      } else {
+          echo '<script>alert("Login Gagal");history.go(-1);</script>';
+      }
   }
 ?>
 <!DOCTYPE html>

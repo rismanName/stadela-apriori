@@ -2,7 +2,7 @@
 <?php
     $id = $_SESSION['user']['id_user'];
     $role = $_SESSION['user']['role'];
-    $hasil_profil = $lihat->member_edit($id);
+    $hasil_profil = $lihat->user_edit($id);
 ?>
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -88,8 +88,8 @@
             </a>
             <div id="collapsePengaturan" class="collapse" aria-labelledby="headingPengaturan" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="index.php?page=pengaturan">Profil Toko</a>
-                    <a class="collapse-item" href="index.php?page=user">Kelola User</a>
+                    <a class="collapse-item" href="index.php?page=pengaturan/toko">Profil Toko</a>
+                    <a class="collapse-item" href="index.php?page=pengaturan/user">Kelola User</a>
                 </div>
             </div>
         </li>
@@ -157,7 +157,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="index.php?page=user">
+                        <a class="dropdown-item" href="index.php?page=profil">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profil
                         </a>
