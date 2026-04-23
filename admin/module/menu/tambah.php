@@ -1,0 +1,33 @@
+<?php
+session_start();
+if (empty($_SESSION['user'])) { header('Location: ../../../login.php'); exit; }
+
+require '../../../config.php';
+require_once '../../../fungsi/csrf.php';
+csrf_guard();
+
+$kode_menu = trim(strip_tags($_POST['kode_menu'] ?? ''));
+$nama_menu = trim(strip_tags($_POST['nama_menu'] ?? ''));
+$id_kategori = filter_input(INPUT_POST, 'id_kategori', FILTER_VALIDATE_INT);
+$harga = filter_input(INPUT_POST, 'harga', FILTER_SANITIZE_NUMBER_FLOAT, ['flags' => FILTER_FLAG_ALLOW_FRACTION]);
+$stok = filter_input(INPUT_POST, 'stok', FILTER_VALIDATE_INT);
+$satuan = trim(strip_tags($_POST['satuan'] ?? ''));
+$deskripsi = trim(strip_tags($_POST['deskripsi'] ?? ''));
+
+if ($kode_menu === '' || $nama_menu === '' || !$id_kategori || $harga === false || $stok === false) {
+    echo '<script>alert("Data menu tidak valid");history.go(-1);</script>';
+    exit;
+}
+
+// Cek kode_menu sudah ada atau belum
+$cek = $config->prepare('SELECT COUNT(*) as total FROM menu WHERE kode_menu = ?');
+$cek->execute([$kode_menu]);
+if ($cek->fetch()['total'] > 0) {
+    echo '<script>alert("Kode menu sudah ada!");history.go(-1);</script>';
+    exit;
+}
+
+$sql = 'INSERT INTO menu (id_kategori, kode_menu, nama_menu, harga, stok, satuan, deskripsi, tgl_input)
+        VALUES (?, ?, ?, ?, ?, ?, ?, NOW())';
+$config->prepare($sql)->execute([$id_kategori, $kode_menu, $nama_menu, $harga, $stok, $satuan, $deskripsi]);
+echo '<script>window.location="../../../index.php?page=menu&success=tambah-data"</script>';

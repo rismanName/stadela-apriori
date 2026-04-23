@@ -11,7 +11,7 @@ $showRemove      = is_string(filter_input(INPUT_GET, 'remove',       FILTER_UNSA
 <div class="alert alert-success"><p>Tambah Data Berhasil !</p></div>
 <?php }?>
 <?php if($showSuccessEdit){?>
-<div class="alert alert-success"><p>Update Data Berhasil !</p></div>
+<div class="alert alert-success"><p>Ubah Data Berhasil !</p></div>
 <?php }?>
 <?php if($showRemove){?>
 <div class="alert alert-danger"><p>Hapus Data Berhasil !</p></div>
@@ -53,13 +53,13 @@ $showRemove      = is_string(filter_input(INPUT_GET, 'remove',       FILTER_UNSA
                     <td><?= htmlspecialchars($isi['nama_kategori'], ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($isi['tgl_input'], ENT_QUOTES, 'UTF-8'); ?></td>
                     <td>
-                        <!-- Edit: buka modal, isi data lewat JS -->
+                        <!-- Ubah: buka modal, isi data lewat JS -->
                         <button class="btn btn-warning btn-sm"
                             onclick="bukaEdit(
                                 '<?= $isi['id_kategori']; ?>',
                                 '<?= htmlspecialchars(addslashes($isi['nama_kategori']), ENT_QUOTES, 'UTF-8'); ?>'
                             )">
-                            Edit
+                            Ubah
                         </button>
                         <!-- Hapus: tetap pakai hapus.php seperti aslinya -->
                         <a href="admin/module/kategori/hapus.php?id=<?= urlencode($isi['id_kategori']); ?>&csrf_token=<?= urlencode(csrf_get_token()); ?>"
@@ -95,7 +95,7 @@ $showRemove      = is_string(filter_input(INPUT_GET, 'remove',       FILTER_UNSA
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-plus mr-1"></i> Insert Data
+                        <i class="fa fa-plus mr-1"></i> Tambah Data
                     </button>
                 </div>
             </form>
@@ -108,7 +108,7 @@ $showRemove      = is_string(filter_input(INPUT_GET, 'remove',       FILTER_UNSA
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="fa fa-edit mr-2"></i>Edit Kategori</h5>
+                <h5 class="modal-title"><i class="fa fa-edit mr-2"></i>Ubah Kategori</h5>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
             <form method="POST" action="admin/module/kategori/ubah.php">
