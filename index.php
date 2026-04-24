@@ -15,23 +15,40 @@
         // Halaman yang boleh diakses per role
         $allowedPages = [
             'admin' => [
+                // Dashboard
                 'dashboard',
+
+                // Master Data
                 'kategori',
                 'menu',
-                'menu/details',
-                'menu/edit',
-                'penjualan',
-                'penjualan/import',
-                'apriori',
-                'laporan',
-                'pengaturan/toko',
-                'pengaturan/user',
-                'profil',
-            ],
-            'kasir' => [
-                'dashboard',
+
+                // Transaksi
                 'transaksi',
                 'transaksi/riwayat',
+
+                // Data Mining
+                'apriori',
+                'apriori/itemset',
+                'apriori/rules',
+
+                // Laporan
+                'laporan',
+
+                // Pengaturan
+                'pengaturan/toko',
+                'pengaturan/user',
+
+                // Profil
+                'profil',
+            ],
+
+            'kasir' => [
+                'dashboard',
+
+                // Transaksi saja
+                'transaksi',
+                'transaksi/riwayat',
+
                 'profil',
             ],
         ];

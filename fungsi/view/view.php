@@ -1,247 +1,257 @@
 <?php
+declare(strict_types=1);
+
 class view
 {
-    protected $db;
-    public function __construct($db)
+    protected PDO $db;
+
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }
 
-    // =================== USERS ===================
-    public function user()
+    public function user(): array
     {
-        $sql = "SELECT * FROM users";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('SELECT * FROM users ORDER BY nama ASC');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function user_edit($id)
+    public function user_edit(int $id): array|false
     {
-        $sql = "SELECT * FROM users WHERE id_user = ?";
-        $row = $this->db->prepare($sql);
-        $row->execute([$id]);
-        return $row->fetch();
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE id_user = ? LIMIT 1');
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // =================== TOKO ===================
-    public function toko()
+    public function member_edit(int $id): array|false
     {
-        $sql = "SELECT * FROM toko WHERE id_toko = '1'";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetch();
+        return $this->user_edit($id);
     }
 
-    // =================== KATEGORI ===================
-    public function kategori()
+    public function toko(): array|false
     {
-        $sql = "SELECT * FROM kategori";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('SELECT * FROM toko WHERE id_toko = 1 LIMIT 1');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function kategori_edit($id)
+    public function kategori(): array
     {
-        $sql = "SELECT * FROM kategori WHERE id_kategori = ?";
-        $row = $this->db->prepare($sql);
-        $row->execute([$id]);
-        return $row->fetch();
+        $stmt = $this->db->prepare('SELECT * FROM kategori ORDER BY nama_kategori ASC');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function kategori_row()
+    public function kategori_edit(int $id): array|false
     {
-        $sql = "SELECT * FROM kategori";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->rowCount();
+        $stmt = $this->db->prepare('SELECT * FROM kategori WHERE id_kategori = ? LIMIT 1');
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // =================== BARANG ===================
-    public function barang()
+    public function kategori_row(): int
     {
-        $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori
-                FROM barang
-                INNER JOIN kategori ON barang.id_kategori = kategori.id_kategori
-                ORDER BY id DESC";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM kategori');
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
     }
 
-    public function barang_stok()
+    public function menu(): array
     {
-        $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori
-                FROM barang
-                INNER JOIN kategori ON barang.id_kategori = kategori.id_kategori
-                WHERE stok <= 3
-                ORDER BY id DESC";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('
+            SELECT m.*, k.nama_kategori
+            FROM menu m
+            LEFT JOIN kategori k ON k.id_kategori = m.id_kategori
+            ORDER BY m.nama_menu ASC
+        ');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function barang_edit($id)
+    public function menu_stok(): array
     {
-        $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori
-                FROM barang
-                INNER JOIN kategori ON barang.id_kategori = kategori.id_kategori
-                WHERE id_barang = ?";
-        $row = $this->db->prepare($sql);
-        $row->execute([$id]);
-        return $row->fetch();
+        $stmt = $this->db->prepare('
+            SELECT m.*, k.nama_kategori
+            FROM menu m
+            LEFT JOIN kategori k ON k.id_kategori = m.id_kategori
+            WHERE m.stok <= 3
+            ORDER BY m.stok ASC, m.nama_menu ASC
+        ');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function barang_cari($cari)
+    public function menu_edit(int $id): array|false
     {
-        $param = "%{$cari}%";
-        $sql = "SELECT barang.*, kategori.id_kategori, kategori.nama_kategori
-                FROM barang
-                INNER JOIN kategori ON barang.id_kategori = kategori.id_kategori
-                WHERE id_barang LIKE ? OR nama_barang LIKE ? OR merk LIKE ?";
-        $row = $this->db->prepare($sql);
-        $row->execute([$param, $param, $param]);
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('
+            SELECT m.*, k.nama_kategori
+            FROM menu m
+            LEFT JOIN kategori k ON k.id_kategori = m.id_kategori
+            WHERE m.id_menu = ?
+            LIMIT 1
+        ');
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function barang_id()
+    public function menu_cari(string $keyword): array
     {
-        $sql = "SELECT * FROM barang ORDER BY id DESC";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        $hasil = $row->fetch();
-
-        $urut  = substr($hasil['id_barang'], 2, 3);
-        $tambah = (int) $urut + 1;
-        if (strlen($tambah) == 1) {
-            $format = 'BR00' . $tambah;
-        } elseif (strlen($tambah) == 2) {
-            $format = 'BR0' . $tambah;
-        } else {
-            $ex     = explode('BR', $hasil['id_barang']);
-            $no     = (int) $ex[1] + 1;
-            $format = 'BR' . $no;
-        }
-        return $format;
+        $param = '%' . trim($keyword) . '%';
+        $stmt = $this->db->prepare('
+            SELECT m.*, k.nama_kategori
+            FROM menu m
+            LEFT JOIN kategori k ON k.id_kategori = m.id_kategori
+            WHERE m.kode_menu LIKE ? OR m.nama_menu LIKE ?
+            ORDER BY m.nama_menu ASC
+        ');
+        $stmt->execute([$param, $param]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function barang_row()
+    public function menu_id(): string
     {
-        $sql = "SELECT * FROM barang";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->rowCount();
+        $stmt = $this->db->prepare('SELECT id_menu FROM menu ORDER BY id_menu DESC LIMIT 1');
+        $stmt->execute();
+        $lastId = (int) $stmt->fetchColumn();
+        return 'MNU' . str_pad((string) ($lastId + 1), 4, '0', STR_PAD_LEFT);
     }
 
-    public function barang_stok_row()
+    public function menu_row(): int
     {
-        $sql = "SELECT SUM(stok) AS jml FROM barang";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetch();
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM menu');
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
     }
 
-    public function barang_beli_row()
+    public function menu_stok_row(): array
     {
-        $sql = "SELECT SUM(harga_beli) AS beli FROM barang";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetch();
+        $stmt = $this->db->prepare('SELECT COALESCE(SUM(stok), 0) AS jml FROM menu');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: ['jml' => 0];
     }
 
-    // =================== NOTA / JUAL ===================
-    public function jual_row()
+    public function menu_beli_row(): array
     {
-        $sql = "SELECT SUM(jumlah) AS stok FROM nota";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetch();
+        $stmt = $this->db->prepare('SELECT COALESCE(SUM(harga_beli), 0) AS beli FROM menu');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: ['beli' => 0];
     }
 
-    public function jual()
+    public function jual_row(): array
     {
-        $sql = "SELECT nota.*, barang.id_barang, barang.nama_barang, barang.harga_beli,
-                       users.id_user, users.nama
-                FROM nota
-                LEFT JOIN barang ON barang.id_barang = nota.id_barang
-                LEFT JOIN users  ON users.id_user    = nota.id_user       /* member → users */
-                WHERE nota.periode = ?
-                ORDER BY id_nota DESC";
-        $row = $this->db->prepare($sql);
-        $row->execute([date('m-Y')]);
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('SELECT COALESCE(SUM(jumlah), 0) AS stok FROM detail_transaksi');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: ['stok' => 0];
     }
 
-    public function periode_jual($periode)
+    public function jual(): array
     {
-        $sql = "SELECT nota.*, barang.id_barang, barang.nama_barang, barang.harga_beli,
-                       users.id_user, users.nama
-                FROM nota
-                LEFT JOIN barang ON barang.id_barang = nota.id_barang
-                LEFT JOIN users  ON users.id_user    = nota.id_user       /* member → users */
-                WHERE nota.periode = ?
-                ORDER BY id_nota ASC";
-        $row = $this->db->prepare($sql);
-        $row->execute([$periode]);
-        return $row->fetchAll();
+        return $this->periode_jual(date('m-Y'));
     }
 
-    public function hari_jual($hari)
+    public function periode_jual(string $periode): array
     {
-        $ex        = explode('-', $hari);
-        $monthName = date('F', mktime(0, 0, 0, $ex[1], 10));
-        $tgl       = (int) $ex[2];
-        $cek       = $tgl . ' ' . $monthName . ' ' . $ex[0];
-        $param     = "%{$cek}%";
-
-        $sql = "SELECT nota.*, barang.id_barang, barang.nama_barang, barang.harga_beli,
-                       users.id_user, users.nama
-                FROM nota
-                LEFT JOIN barang ON barang.id_barang = nota.id_barang
-                LEFT JOIN users  ON users.id_user    = nota.id_user       /* member → users */
-                WHERE nota.tanggal_input LIKE ?
-                ORDER BY id_nota ASC";
-        $row = $this->db->prepare($sql);
-        $row->execute([$param]);
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('
+            SELECT
+                t.id_transaksi,
+                t.kode_transaksi,
+                t.total,
+                t.tanggal,
+                t.periode,
+                dt.id_detail,
+                dt.id_menu,
+                dt.nama_menu,
+                dt.jumlah,
+                dt.harga_satuan,
+                dt.subtotal,
+                m.kode_menu,
+                m.harga_beli,
+                u.nama
+            FROM transaksi t
+            INNER JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi
+            LEFT JOIN menu m ON m.id_menu = dt.id_menu
+            INNER JOIN users u ON u.id_user = t.id_user
+            WHERE t.periode = ?
+            ORDER BY t.tanggal ASC, t.id_transaksi ASC, dt.nama_menu ASC
+        ');
+        $stmt->execute([$periode]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // =================== PENJUALAN ===================
-    public function penjualan()
+    public function hari_jual(string $tanggal): array
     {
-        $sql = "SELECT penjualan.*, barang.id_barang, barang.nama_barang,
-                       users.id_user, users.nama
-                FROM penjualan
-                LEFT JOIN barang ON barang.id_barang   = penjualan.id_barang
-                LEFT JOIN users  ON users.id_user      = penjualan.id_user  /* member → users */
-                ORDER BY id_penjualan";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetchAll();
+        $stmt = $this->db->prepare('
+            SELECT
+                t.id_transaksi,
+                t.kode_transaksi,
+                t.total,
+                t.tanggal,
+                t.periode,
+                dt.id_detail,
+                dt.id_menu,
+                dt.nama_menu,
+                dt.jumlah,
+                dt.harga_satuan,
+                dt.subtotal,
+                m.kode_menu,
+                m.harga_beli,
+                u.nama
+            FROM transaksi t
+            INNER JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi
+            LEFT JOIN menu m ON m.id_menu = dt.id_menu
+            INNER JOIN users u ON u.id_user = t.id_user
+            WHERE t.tanggal = ?
+            ORDER BY t.tanggal ASC, t.id_transaksi ASC, dt.nama_menu ASC
+        ');
+        $stmt->execute([$tanggal]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function jumlah()
+    public function penjualan(): array
     {
-        $sql = "SELECT SUM(total) AS bayar FROM penjualan";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetch();
+        $stmt = $this->db->prepare('
+            SELECT
+                t.id_transaksi,
+                t.kode_transaksi,
+                t.total,
+                t.tanggal,
+                t.periode,
+                dt.id_detail,
+                dt.id_menu,
+                dt.nama_menu,
+                dt.jumlah,
+                dt.harga_satuan,
+                dt.subtotal,
+                m.kode_menu,
+                m.harga_beli,
+                u.nama
+            FROM transaksi t
+            INNER JOIN detail_transaksi dt ON dt.id_transaksi = t.id_transaksi
+            LEFT JOIN menu m ON m.id_menu = dt.id_menu
+            INNER JOIN users u ON u.id_user = t.id_user
+            ORDER BY t.tanggal DESC, t.id_transaksi DESC, dt.nama_menu ASC
+        ');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function jumlah_nota()
+    public function jumlah(): array
     {
-        $sql = "SELECT SUM(total) AS bayar FROM nota";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetch();
+        $stmt = $this->db->prepare('SELECT COALESCE(SUM(total), 0) AS bayar FROM transaksi');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: ['bayar' => 0];
     }
 
-    public function jml()
+    public function jumlah_nota(): array
     {
-        $sql = "SELECT SUM(harga_beli * stok) AS byr FROM barang";
-        $row = $this->db->prepare($sql);
-        $row->execute();
-        return $row->fetch();
+        return $this->jumlah();
+    }
+
+    public function jml(): array
+    {
+        $stmt = $this->db->prepare('SELECT COALESCE(SUM(harga_beli * stok), 0) AS byr FROM menu');
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: ['byr' => 0];
     }
 }

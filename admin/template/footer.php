@@ -38,7 +38,7 @@
     });
    </script>
    <?php
-        $sql=" select * from barang where stok <=3";
+        $sql=" select * from menu where stok <=3";
         $row = $config -> prepare($sql);
         $row -> execute();
         $q = $row -> fetch();

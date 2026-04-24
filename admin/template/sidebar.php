@@ -48,25 +48,32 @@
 
         <!-- Data Penjualan -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePenjualan"
-                aria-expanded="false" aria-controls="collapsePenjualan">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaksi"
+                aria-expanded="false" aria-controls="collapseTransaksi">
                 <i class="fas fa-fw fa-shopping-cart"></i>
-                <span>Penjualan</span>
+                <span>Transaksi</span>
             </a>
-            <div id="collapsePenjualan" class="collapse" aria-labelledby="headingPenjualan" data-parent="#accordionSidebar">
+            <div id="collapseTransaksi" class="collapse" aria-labelledby="headingTransaksi" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="index.php?page=penjualan">Data Penjualan</a>
-                    <a class="collapse-item" href="index.php?page=penjualan/import">Import Transaksi</a>
+                    <a class="collapse-item" href="index.php?page=transaksi">Input Transaksi</a>
+                    <a class="collapse-item" href="index.php?page=transaksi/riwayat">Riwayat Transaksi</a>
                 </div>
             </div>
         </li>
 
         <!-- Apriori -->
         <li class="nav-item">
-            <a class="nav-link" href="index.php?page=apriori">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseApriori">
                 <i class="fas fa-fw fa-brain"></i>
-                <span>Proses Apriori</span>
+                <span>Data Mining</span>
             </a>
+            <div id="collapseApriori" class="collapse">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="index.php?page=apriori">Proses Apriori</a>
+                    <a class="collapse-item" href="index.php?page=apriori/itemset">Frequent Itemset</a>
+                    <a class="collapse-item" href="index.php?page=apriori/rules">Association Rules</a>
+                </div>
+            </div>
         </li>
 
         <!-- Laporan -->
