@@ -78,16 +78,17 @@ CREATE TABLE `menu` (
 -- 5. TRANSAKSI (header penjualan)
 -- ------------------------------------------------------------
 CREATE TABLE `transaksi` (
-  `id_transaksi`  INT(11)       NOT NULL AUTO_INCREMENT,
-  `kode_transaksi`VARCHAR(30)   NOT NULL,
-  `id_user`       INT(11)       NOT NULL,              -- kasir yang input
-  `total`         DECIMAL(12,2) NOT NULL DEFAULT 0,
-  `tanggal`       DATE          NOT NULL,
-  `periode`       VARCHAR(10)   NOT NULL,              -- format: MM-YYYY
-  `created_at`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_transaksi`      INT(11)       NOT NULL AUTO_INCREMENT,
+  `kode_transaksi`    VARCHAR(30)   NOT NULL,
+  `id_user`           INT(11)       NOT NULL,              -- kasir yang input
+  `tanggal_transaksi` DATE          NOT NULL,
+  `total`             DECIMAL(12,2) NOT NULL DEFAULT 0,
+  `created_at`        TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   PRIMARY KEY (`id_transaksi`),
   UNIQUE KEY `uq_kode_transaksi` (`kode_transaksi`),
+  KEY `idx_tanggal` (`tanggal_transaksi`),
+  KEY `idx_id_user` (`id_user`),
   FOREIGN KEY (`id_user`) REFERENCES `users`(`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -96,34 +97,38 @@ CREATE TABLE `transaksi` (
 -- Tabel kunci untuk Apriori — satu baris = satu item dalam satu transaksi
 -- ------------------------------------------------------------
 CREATE TABLE `detail_transaksi` (
-  `id_detail`     INT(11)       NOT NULL AUTO_INCREMENT,
-  `id_transaksi`  INT(11)       NOT NULL,
-  `id_menu`       INT(11)       NOT NULL,
-  `nama_menu`     VARCHAR(255)  NOT NULL,              -- snapshot nama saat transaksi
-  `jumlah`        INT(11)       NOT NULL DEFAULT 1,
-  `harga_satuan`  DECIMAL(10,2) NOT NULL DEFAULT 0,
-  `subtotal`      DECIMAL(12,2) NOT NULL DEFAULT 0,
+  `id_detail` INT(11)       NOT NULL AUTO_INCREMENT,
+  `id_transaksi`        INT(11)       NOT NULL,
+  `id_menu`             INT(11)       NOT NULL,
+  `nama_menu`           VARCHAR(255)  NOT NULL,              -- snapshot nama saat transaksi
+  `jumlah`              INT(11)       NOT NULL DEFAULT 1,
+  `harga_satuan`        DECIMAL(10,2) NOT NULL DEFAULT 0,
+  `subtotal`            DECIMAL(12,2) NOT NULL DEFAULT 0,
 
   PRIMARY KEY (`id_detail`),
+  KEY `idx_id_transaksi` (`id_transaksi`),
+  KEY `idx_id_menu` (`id_menu`),
   FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi`(`id_transaksi`) ON DELETE CASCADE,
   FOREIGN KEY (`id_menu`)      REFERENCES `menu`(`id_menu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------
--- 7. APRIORI PROSES (log setiap kali admin menjalankan mining)
+-- 7. APRIORI proses (log setiap kali admin menjalankan mining)
 -- ------------------------------------------------------------
 CREATE TABLE `apriori_proses` (
-  `id_proses`      INT(11)      NOT NULL AUTO_INCREMENT,
+  `id_proses`   INT(11)      NOT NULL AUTO_INCREMENT,
   `id_user`        INT(11)      NOT NULL,              -- admin yang menjalankan
   `min_support`    FLOAT        NOT NULL,              -- misal: 0.30 = 30%
   `min_confidence` FLOAT        NOT NULL,              -- misal: 0.50 = 50%
-  `periode_dari`   VARCHAR(10)  DEFAULT NULL,          -- filter periode awal
-  `periode_sampai` VARCHAR(10)  DEFAULT NULL,          -- filter periode akhir
-  `total_transaksi`INT(11)      NOT NULL DEFAULT 0,
+  `tanggal_dari`   DATE         DEFAULT NULL,          -- filter tanggal awal
+  `tanggal_sampai` DATE         DEFAULT NULL,          -- filter tanggal akhir
+  `total_transaksi` INT(11)     NOT NULL DEFAULT 0,
   `status`         ENUM('proses','selesai','gagal') NOT NULL DEFAULT 'proses',
-  `tgl_proses`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   PRIMARY KEY (`id_proses`),
+  KEY `idx_id_user` (`id_user`),
+  KEY `idx_status` (`status`),
   FOREIGN KEY (`id_user`) REFERENCES `users`(`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -132,7 +137,7 @@ CREATE TABLE `apriori_proses` (
 -- ------------------------------------------------------------
 CREATE TABLE `apriori_itemset` (
   `id_itemset`  INT(11)      NOT NULL AUTO_INCREMENT,
-  `id_proses`   INT(11)      NOT NULL,
+  `id_proses` INT(11)     NOT NULL,
   `itemset`     TEXT         NOT NULL,                 -- misal: "Kopi Hitam, Pisang Goreng"
   `ukuran`      INT(11)      NOT NULL DEFAULT 1,       -- C1=1, C2=2, C3=3
   `jumlah`      INT(11)      NOT NULL DEFAULT 0,       -- jumlah transaksi yang mengandung
@@ -140,24 +145,28 @@ CREATE TABLE `apriori_itemset` (
   `support_pct` FLOAT        NOT NULL DEFAULT 0,       -- dalam persen (0 - 100)
 
   PRIMARY KEY (`id_itemset`),
+  KEY `idx_id_proses` (`id_proses`),
+  KEY `idx_ukuran` (`ukuran`),
   FOREIGN KEY (`id_proses`) REFERENCES `apriori_proses`(`id_proses`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------
--- 9. APRIORI HASIL (association rules final)
+-- 9. HASIL APRIORI (association rules final)
 -- ------------------------------------------------------------
-CREATE TABLE `apriori_hasil` (
-  `id_hasil`    INT(11)      NOT NULL AUTO_INCREMENT,
-  `id_proses`   INT(11)      NOT NULL,
-  `antecedent`  TEXT         NOT NULL,                 -- IF: "Kopi Hitam"
-  `consequent`  TEXT         NOT NULL,                 -- THEN: "Pisang Goreng"
-  `support`     FLOAT        NOT NULL DEFAULT 0,
-  `support_pct` FLOAT        NOT NULL DEFAULT 0,
-  `confidence`  FLOAT        NOT NULL DEFAULT 0,
-  `confidence_pct` FLOAT     NOT NULL DEFAULT 0,
-  `lift`        FLOAT        NOT NULL DEFAULT 0,
+CREATE TABLE `hasil_apriori` (
+  `id_hasil`      INT(11)      NOT NULL AUTO_INCREMENT,
+  `id_proses`  INT(11)      NOT NULL,
+  `antecedent`    TEXT         NOT NULL,                 -- IF: "Kopi Hitam"
+  `consequent`    TEXT         NOT NULL,                 -- THEN: "Pisang Goreng"
+  `support`       FLOAT        NOT NULL DEFAULT 0,
+  `support_pct`   FLOAT        NOT NULL DEFAULT 0,
+  `confidence`    FLOAT        NOT NULL DEFAULT 0,
+  `confidence_pct` FLOAT       NOT NULL DEFAULT 0,
+  `lift`          FLOAT        NOT NULL DEFAULT 0,
 
   PRIMARY KEY (`id_hasil`),
+  KEY `idx_id_proses` (`id_proses`),
+  KEY `idx_confidence` (`confidence`),
   FOREIGN KEY (`id_proses`) REFERENCES `apriori_proses`(`id_proses`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

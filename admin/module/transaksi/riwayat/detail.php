@@ -36,11 +36,7 @@ $details = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </tr>
             <tr>
                 <td><strong>Tanggal</strong></td>
-                <td><?= htmlspecialchars($transaksi['tanggal'], ENT_QUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <td><strong>Periode</strong></td>
-                <td><?= htmlspecialchars($transaksi['periode'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?= htmlspecialchars($transaksi['tanggal_transaksi'], ENT_QUOTES, 'UTF-8'); ?></td>
             </tr>
         </table>
     </div>

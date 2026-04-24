@@ -29,7 +29,6 @@ $id_user = $_SESSION['user']['id_user'];
                     <th>Tanggal</th>
                     <th>Total Item</th>
                     <th>Total Harga</th>
-                    <th>Periode</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -54,10 +53,9 @@ $id_user = $_SESSION['user']['id_user'];
                     <tr>
                         <td><?= $no++; ?></td>
                         <td><strong><?= htmlspecialchars($isi['kode_transaksi'], ENT_QUOTES, 'UTF-8'); ?></strong></td>
-                        <td><?= htmlspecialchars($isi['tanggal'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?= htmlspecialchars($isi['tanggal_transaksi'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td><?= htmlspecialchars($isi['total_item'] ?? 0, ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>Rp. <?= number_format($isi['total'], 0, ',', '.'); ?></td>
-                        <td><?= htmlspecialchars($isi['periode'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>
                             <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#detailModal"
                                 onclick="lihatDetail(<?= $isi['id_transaksi']; ?>)">

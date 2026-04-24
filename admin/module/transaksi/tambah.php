@@ -33,7 +33,6 @@ $result = $stmt->fetch(PDO::FETCH_ASSOC);
 $nomor_urut = ($result['count'] + 1);
 $kode = $prefix . '-' . str_pad($nomor_urut, 3, '0', STR_PAD_LEFT);
 
-$periode = date('m-Y', strtotime($tanggal));
 $total = 0;
 
 // Hitung total dan validasi item
@@ -65,10 +64,10 @@ try {
     $config->beginTransaction();
 
     // Insert transaksi
-    $sql = 'INSERT INTO transaksi (kode_transaksi, id_user, total, tanggal, periode, created_at)
-            VALUES (?, ?, ?, ?, ?, NOW())';
+    $sql = 'INSERT INTO transaksi (kode_transaksi, id_user, total, tanggal_transaksi, created_at)
+            VALUES (?, ?, ?, ?, NOW())';
     $stmt = $config->prepare($sql);
-    $stmt->execute([$kode, $id_user, $total, $tanggal, $periode]);
+    $stmt->execute([$kode, $id_user, $total, $tanggal]);
 
     // Get last insert ID
     $id_transaksi = $config->lastInsertId();

@@ -54,15 +54,6 @@ if (!function_exists('stadela_fetch_apriori_transactions')) {
         $conditions = [];
         $params = [];
 
-        if ($dateFrom !== null) {
-            $conditions[] = 't.tanggal >= ?';
-            $params[] = $dateFrom;
-        }
-        if ($dateTo !== null) {
-            $conditions[] = 't.tanggal <= ?';
-            $params[] = $dateTo;
-        }
-
         $where = $conditions === [] ? '' : 'WHERE ' . implode(' AND ', $conditions);
 
         $stmt = $db->prepare("
