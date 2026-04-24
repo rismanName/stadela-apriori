@@ -30,15 +30,15 @@ $showSuccess = is_string(filter_input(INPUT_GET, 'success', FILTER_UNSAFE_RAW)) 
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Kode Transaksi <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="kode_transaksi"
-                            placeholder="Auto Generate" readonly value="<?= 'TRX' . date('YmdHis'); ?>">
+                        <input type="text" class="form-control" id="kodeTransaksi"
+                            placeholder="Auto Generate" readonly style="background-color: #e9ecef; font-weight: bold;">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Tanggal <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" name="tanggal"
-                            value="<?= date('Y-m-d'); ?>" required>
+                        <input type="date" class="form-control" name="tanggal" id="tanggalInput"
+                            value="<?= date('Y-m-d'); ?>" required onchange="generateKodeTransaksi()">
                     </div>
                 </div>
             </div>
@@ -115,6 +115,19 @@ $showSuccess = is_string(filter_input(INPUT_GET, 'success', FILTER_UNSAFE_RAW)) 
 let itemCount = 0;
 let menuOptions = [];
 
+// Generate Kode Transaksi
+function generateKodeTransaksi() {
+    const tanggal = document.getElementById('tanggalInput').value;
+    if (!tanggal) return;
+
+    const tanggalFormat = tanggal.replace(/-/g, ''); // Convert YYYY-MM-DD to YYYYMMDD
+    const prefix = 'TRX' + tanggalFormat;
+
+    // Placeholder - kode sebenarnya akan di-generate di server saat submit
+    // Ini hanya untuk preview
+    document.getElementById('kodeTransaksi').value = prefix + '-###';
+}
+
 // Get menu data dari PHP
 <?php
 $stmt = $config->prepare('SELECT id_menu, nama_menu, harga FROM menu ORDER BY nama_menu');
@@ -124,6 +137,11 @@ foreach($menus as $m) {
     echo "menuOptions.push({id: " . intval($m['id_menu']) . ", nama: '" . addslashes($m['nama_menu']) . "', harga: " . floatval($m['harga']) . "});";
 }
 ?>
+
+// Init kode transaksi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    generateKodeTransaksi();
+});
 
 function tambahItem() {
     const container = document.getElementById('itemsContainer');

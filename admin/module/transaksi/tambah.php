@@ -22,8 +22,17 @@ if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $tanggal)) {
     exit;
 }
 
-// Generate kode transaksi
-$kode = 'TRX' . date('YmdHis') . rand(1000, 9999);
+// Generate kode transaksi dengan auto numbering
+$tanggal_format = str_replace('-', '', $tanggal); // Convert YYYY-MM-DD to YYYYMMDD
+$prefix = 'TRX' . $tanggal_format;
+
+// Hitung nomor urutan untuk tanggal ini
+$stmt = $config->prepare('SELECT COUNT(*) as count FROM transaksi WHERE kode_transaksi LIKE ?');
+$stmt->execute([$prefix . '%']);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+$nomor_urut = ($result['count'] + 1);
+$kode = $prefix . '-' . str_pad($nomor_urut, 3, '0', STR_PAD_LEFT);
+
 $periode = date('m-Y', strtotime($tanggal));
 $total = 0;
 
