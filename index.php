@@ -28,8 +28,6 @@
 
                 // Data Mining
                 'apriori',
-                'apriori/itemset',
-                'apriori/rules',
 
                 // Laporan
                 'laporan',
