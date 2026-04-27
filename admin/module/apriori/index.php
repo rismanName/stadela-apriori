@@ -176,11 +176,11 @@ if ($id_proses_param) {
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0"><i class="fas fa-project-diagram mr-2"></i>Association Rules</h6>
                 <?php if(!empty($hasil_rules)){ ?>
-                <a href="admin/module/apriori/hapus.php?id=<?= $id_proses_param; ?>&csrf_token=<?= urlencode(csrf_get_token()); ?>"
+                <!-- <a href="admin/module/apriori/hapus.php?id=<?= $id_proses_param; ?>&csrf_token=<?= urlencode(csrf_get_token()); ?>"
                     onclick="return confirm('Hapus hasil proses ini?');"
                     class="btn btn-danger btn-sm">
                     <i class="fas fa-trash mr-1"></i> Hapus Proses
-                </a>
+                </a> -->
                 <?php } ?>
             </div>
             <div class="card-body p-0">
