@@ -36,37 +36,37 @@ Sesuaikan kredensial koneksi pada `config.php` dengan nama basis data, pengguna,
 ## Tangkapan Layar
 
 ### Versi 2.0
-- Halaman Masuk  
+- Halaman Masuk
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/1.png)
-- Dasbor  
+- Dasbor
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/2.png)
-- Tabel Barang  
+- Tabel Barang
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/3.png)
-- Kategori  
+- Kategori
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/4.png)
-- Keranjang / Transaksi  
+- Keranjang / Transaksi
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/5.png)
-- Laporan  
+- Laporan
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/6.png)
-- Nama Toko  
+- Nama Toko
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/7.png)
-- Pengaturan Pengguna  
+- Pengaturan Pengguna
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/picv2/8.png)
 
 ### Versi 1.0
-- Halaman Masuk  
+- Halaman Masuk
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/pic/login.png)
-- Dasbor  
+- Dasbor
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/pic/1.png)
-- Tabel Barang  
+- Tabel Barang
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/pic/2.png)
-- Keranjang / Transaksi  
+- Keranjang / Transaksi
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/pic/4.png)
-- Laporan  
+- Laporan
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/pic/5.png)
-- Nama Toko  
+- Nama Toko
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/pic/6.png)
-- Pengaturan Pengguna  
+- Pengaturan Pengguna
   ![](https://raw.githubusercontent.com/fauzan1892/pos-kasir-php/master/assets/img/pic/7.png)
 
 ## Riwayat Perubahan
@@ -77,25 +77,25 @@ Sesuaikan kredensial koneksi pada `config.php` dengan nama basis data, pengguna,
 - **12 Desember 2022**
   - Rilis versi 2.0.
   - Migrasi ke template SB Admin 2 Bootstrap 4.
-- **31 Januari 2021**  
-  - Penambahan sortir stok kurang dari &ge; 3.  
-  - Pencarian laporan per tanggal dan per bulan.  
+- **31 Januari 2021**
+  - Penambahan sortir stok kurang dari &ge; 3.
+  - Pencarian laporan per tanggal dan per bulan.
   - Perbaikan perhitungan laporan.
-- **06 Oktober 2020**  
-  - Perbaikan galat sesi pada lingkungan hosting.  
-  - Pembaruan tampilan login dan header tabel.  
-  - Penyesuaian transaksi agar stok yang lebih kecil dari keranjang tidak dapat diproses.  
+- **06 Oktober 2020**
+  - Perbaikan galat sesi pada lingkungan hosting.
+  - Pembaruan tampilan login dan header tabel.
+  - Penyesuaian transaksi agar stok yang lebih kecil dari keranjang tidak dapat diproses.
   - Penghapusan _trigger_ SQL dan pengurangan stok otomatis setelah transaksi bayar.
-- **23 Agustus 2020**  
-  - Revisi modul cetak.  
+- **23 Agustus 2020**
+  - Revisi modul cetak.
   - Penambahan pemberitahuan transaksi telah dibayar.
-- **18 Juli 2020**  
-  - Perbaikan fitur edit kategori dan formulir tambah barang.  
+- **18 Juli 2020**
+  - Perbaikan fitur edit kategori dan formulir tambah barang.
   - Perapihan formulir laporan.
-- **29 Agustus 2019**  
-  - Perbaikan tampilan laporan.  
-  - Memastikan transaksi yang dibayar tercatat pada laporan.  
-  - Pencarian barang otomatis dengan dukungan jQuery Ajax.  
+- **29 Agustus 2019**
+  - Perbaikan tampilan laporan.
+  - Memastikan transaksi yang dibayar tercatat pada laporan.
+  - Pencarian barang otomatis dengan dukungan jQuery Ajax.
   - Laporan dapat difilter per bulan dan tahun.
 
 ## Kontributor
@@ -105,3 +105,8 @@ Blog resmi: <https://www.codekop.com/>
 
 Gunakan aplikasi dengan bijak dan selamat belajar.
 # stadela-apriori
+
+ php -S 127.0.0.1:8001
+
+admin
+admin
