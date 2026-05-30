@@ -176,10 +176,8 @@ if ($id_proses_param) {
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0"><i class="fas fa-project-diagram mr-2"></i>Association Rules</h6>
                 <?php if(!empty($hasil_rules)){ ?>
-                <!-- <a href="admin/module/apriori/hapus.php?id=<?= $id_proses_param; ?>&csrf_token=<?= urlencode(csrf_get_token()); ?>"
-                    onclick="return confirm('Hapus hasil proses ini?');"
-                    class="btn btn-danger btn-sm">
-                    <i class="fas fa-trash mr-1"></i> Hapus Proses
+                <!-- <a href="admin/module/apriori/laporan.php?id=<?= $id_proses_param; ?>" class="btn btn-info btn-sm" target="_blank">
+                    <i class="fas fa-file-pdf mr-1"></i>Laporan Detail
                 </a> -->
                 <?php } ?>
             </div>
@@ -198,22 +196,51 @@ if ($id_proses_param) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $no = 1; foreach($hasil_rules as $rule){ ?>
+                            <?php $no = 1; foreach($hasil_rules as $rule){
+                                // Format keterangan deskriptif
+                                $antecedent = htmlspecialchars($rule['antecedent'], ENT_QUOTES, 'UTF-8');
+                                $consequent = htmlspecialchars($rule['consequent'], ENT_QUOTES, 'UTF-8');
+                                $confidence = $rule['confidence_pct'];
+                                $lift = $rule['lift'];
+
+                                // Tentukan deskripsi berdasarkan lift
+                                if($lift > 1){
+                                    $lift_desc = "SANGAT BERPENGARUH";
+                                    $badge_class = "badge-success";
+                                } elseif($lift == 1){
+                                    $lift_desc = "INDEPENDEN";
+                                    $badge_class = "badge-secondary";
+                                } else {
+                                    $lift_desc = "KURANG BERPENGARUH";
+                                    $badge_class = "badge-danger";
+                                }
+
+                                // Keterangan lengkap
+                                $keterangan = "Jika membeli <b>$antecedent</b>, maka membeli <b>$consequent</b> dengan kepercayaan " . number_format($confidence, 1) . "%";
+                            ?>
                             <tr>
                                 <td><?= $no++; ?></td>
-                                <td><?= htmlspecialchars($rule['antecedent'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                <td><?= htmlspecialchars($rule['consequent'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?= $antecedent; ?></td>
+                                <td><?= $consequent; ?></td>
                                 <td><?= number_format($rule['support_pct'],    2); ?>%</td>
                                 <td><?= number_format($rule['confidence_pct'], 2); ?>%</td>
                                 <td><?= number_format($rule['lift'], 4); ?></td>
                                 <td>
-                                    <?php if($rule['lift'] > 1){ ?>
-                                        <span class="badge badge-success">Positif</span>
-                                    <?php } elseif($rule['lift'] == 1){ ?>
-                                        <span class="badge badge-secondary">Independen</span>
-                                    <?php } else { ?>
-                                        <span class="badge badge-danger">Negatif</span>
-                                    <?php } ?>
+                                    <button type="button" class="btn btn-sm btn-outline-info" data-toggle="tooltip" title="<?= $keterangan; ?>">
+                                        <i class="fas fa-info-circle mr-1"></i>Lihat
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="table-light">
+                                <td colspan="7" style="font-size: 0.9rem; padding: 8px 12px;">
+                                    <div>
+                                        <span><?= $keterangan; ?></span><br>
+                                        <small class="text-muted mt-2 d-block">
+                                            <i class="fas fa-check-circle text-success mr-1"></i>
+                                            <span class="badge <?= $badge_class; ?>"><?= $lift_desc; ?></span>
+                                            — Lift <?= number_format($lift, 2); ?> menunjukkan tingkat hubungan produk ini <?= $lift > 1 ? "sangat kuat" : ($lift == 1 ? "tidak berkaitan" : "lemah"); ?>.
+                                        </small>
+                                    </div>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -236,3 +263,13 @@ if ($id_proses_param) {
         <?php } ?>
     </div>
 </div>
+
+<script>
+// Inisialisasi Bootstrap Tooltip
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({
+        html: true,
+        delay: { show: 500, hide: 100 }
+    });
+});
+</script>

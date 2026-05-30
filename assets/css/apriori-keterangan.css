@@ -1,0 +1,383 @@
+/*
+ * Custom Styles untuk Modul Apriori Keterangan
+ * Tambahkan ke asset atau template header
+ */
+
+/* =============================================
+   Styling untuk Tabel Association Rules
+   ============================================= */
+
+/* Baris detail keterangan - styling */
+tr.table-light {
+    background-color: #f9f9f9 !important;
+    border-left: 3px solid #007bff;
+}
+
+tr.table-light td {
+    vertical-align: middle;
+    padding: 12px 12px !important;
+}
+
+/* Keterangan text */
+tr.table-light span {
+    line-height: 1.6;
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* Badge styling */
+.badge-success, .badge-secondary, .badge-danger {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: #28a745 !important;
+}
+
+.badge-secondary {
+    background-color: #6c757d !important;
+}
+
+.badge-danger {
+    background-color: #dc3545 !important;
+}
+
+/* Info icon */
+tr.table-light i.fa-check-circle {
+    margin-right: 6px;
+}
+
+/* Tooltip styling */
+.tooltip-inner {
+    background-color: #333;
+    border-radius: 4px;
+    max-width: 350px;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+.bs-tooltip-top .tooltip-arrow::before,
+.bs-tooltip-bottom .tooltip-arrow::before,
+.bs-tooltip-left .tooltip-arrow::before,
+.bs-tooltip-right .tooltip-arrow::before {
+    border-color: #333;
+}
+
+/* Button Lihat */
+.btn-outline-info {
+    color: #17a2b8;
+    border-color: #17a2b8;
+    white-space: nowrap;
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+/* =============================================
+   Animasi & Interaksi
+   ============================================= */
+
+/* Smooth expand/collapse */
+tr.table-light {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 200px;
+    }
+}
+
+/* Hover effect pada rule row */
+tr:has(+ tr.table-light):hover {
+    background-color: #f0f0f0;
+}
+
+/* =============================================
+   Card Styling
+   ============================================= */
+
+.card-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.card-header i {
+    margin-right: 8px;
+}
+
+/* =============================================
+   Responsive Adjustments
+   ============================================= */
+
+@media (max-width: 768px) {
+    tr.table-light {
+        font-size: 0.85rem;
+    }
+
+    tr.table-light td {
+        padding: 8px 10px !important;
+    }
+
+    .tooltip-inner {
+        max-width: 280px;
+        font-size: 0.85rem;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    tr.table-light span {
+        font-size: 0.9rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+    }
+}
+
+/* =============================================
+   Print Styles
+   ============================================= */
+
+@media print {
+    .btn-outline-info,
+    .card-header .btn-info,
+    .alert {
+        display: none;
+    }
+
+    tr.table-light {
+        page-break-inside: avoid;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+}
+
+/* =============================================
+   Status Indicator
+   ============================================= */
+
+/* Status badge dengan icon animation */
+.badge::before {
+    content: '●';
+    margin-right: 6px;
+    display: inline-block;
+}
+
+.badge-success::before {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* =============================================
+   Table Enhancement
+   ============================================= */
+
+/* Striped table dengan warna custom */
+.table-bordered td,
+.table-bordered th {
+    border-color: #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-striped tbody tr:nth-of-type(odd) + tr.table-light {
+    background-color: #f9f9f9;
+}
+
+/* Hover effect pada row */
+.table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Header styling */
+thead th {
+    background-color: #DFF0D8;
+    color: #333;
+    font-weight: 600;
+    vertical-align: middle;
+    border-color: #bce8f1;
+}
+
+/* =============================================
+   Laporan Styling (laporan.php)
+   ============================================= */
+
+.card.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    border: 1px solid #e3e6f0;
+}
+
+.card-body {
+    background-color: #fff;
+}
+
+/* Info box styling */
+.row .col-md-3,
+.row .col-md-6 {
+    margin-bottom: 0.5rem;
+}
+
+small.text-muted {
+    font-size: 0.85rem;
+}
+
+small.text-muted d-block {
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Export button styling */
+.btn-group .btn {
+    border-radius: 0;
+    font-weight: 500;
+}
+
+.btn-group .btn:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.btn-group .btn:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+.btn-group .btn.active {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* =============================================
+   Dark Mode Support (Optional)
+   ============================================= */
+
+@media (prefers-color-scheme: dark) {
+    tr.table-light {
+        background-color: #2d3748 !important;
+        color: #e2e8f0;
+    }
+
+    tr.table-light span {
+        color: #cbd5e0;
+    }
+
+    thead th {
+        background-color: #4a5568;
+        color: #e2e8f0;
+    }
+
+    .tooltip-inner {
+        background-color: #1a202c;
+        color: #e2e8f0;
+    }
+}
+
+/* =============================================
+   Loading State (jika diperlukan)
+   ============================================= */
+
+.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #007bff;
+    animation: spin 0.6s infinite;
+    margin-right: 5px;
+}
+
+@keyframes spin {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+/* =============================================
+   Success/Alert Messages
+   ============================================= */
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+/* =============================================
+   Custom Utility Classes
+   ============================================= */
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text-break {
+    word-break: break-word;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-help {
+    cursor: help;
+}
+
+/* =============================================
+   End of Styles
+   ============================================= */
