@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="data_menu" language="java"
+              pageWidth="595" pageHeight="842"
+              columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20">
+
+  <parameter name="TOKO_NAMA" class="java.lang.String">
+    <defaultValueExpression><![CDATA["Stadela Coffee"]]></defaultValueExpression>
+  </parameter>
+
+  <field name="kodeMenu"      class="java.lang.String"/>
+  <field name="namaMenu"      class="java.lang.String"/>
+  <field name="namaKategori"  class="java.lang.String"/>
+  <field name="harga"         class="java.math.BigDecimal"/>
+  <field name="stok"          class="java.lang.Integer"/>
+  <field name="satuan"        class="java.lang.String"/>
+
+  <title>
+    <band height="86" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="555" height="66" backcolor="#2C3E50" mode="Opaque" forecolor="#2C3E50"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="12" y="8" width="531" height="28" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="18" isBold="true"/></textElement>
+        <text><![CDATA[DATA MENU / PRODUK]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="12" y="36" width="531" height="14" forecolor="#AABBCC"/>
+        <textElement><font fontName="SansSerif" size="10"/></textElement>
+        <textFieldExpression><![CDATA[$P{TOKO_NAMA}]]></textFieldExpression>
+      </textField>
+      <textField pattern="dd MMMM yyyy, HH:mm">
+        <reportElement x="12" y="72" width="531" height="12"/>
+        <textElement><font fontName="SansSerif" size="8" isItalic="true"/></textElement>
+        <textFieldExpression><![CDATA["Dicetak: " + new java.util.Date()]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+
+  <columnHeader>
+    <band height="24" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="555" height="24" backcolor="#2C3E50" mode="Opaque" forecolor="#2C3E50"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="0" y="5" width="25" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[#]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="25" y="5" width="65" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Kode]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="90" y="5" width="150" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Nama Menu]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="240" y="5" width="100" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Kategori]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="340" y="5" width="95" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Harga]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="435" y="5" width="50" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Stok]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="485" y="5" width="70" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Satuan]]></text>
+      </staticText>
+    </band>
+  </columnHeader>
+
+  <detail>
+    <band height="20" splitType="Stretch">
+      <textField>
+        <reportElement x="0" y="2" width="25" height="14"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="25" y="2" width="65" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{kodeMenu}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="90" y="2" width="150" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{namaMenu}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="240" y="2" width="100" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{namaKategori} != null ? $F{namaKategori} : "-"]]></textFieldExpression>
+      </textField>
+      <textField pattern="Rp #,##0">
+        <reportElement x="340" y="2" width="95" height="14"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="435" y="2" width="50" height="14"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{stok}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="485" y="2" width="70" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{satuan} != null ? $F{satuan} : ""]]></textFieldExpression>
+      </textField>
+      <line>
+        <reportElement x="0" y="19" width="555" height="1" forecolor="#E0E0E0"/>
+      </line>
+    </band>
+  </detail>
+
+
+  <pageFooter>
+    <band height="18">
+      <textField>
+        <reportElement x="0" y="4" width="555" height="12" forecolor="#888888"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="8"/></textElement>
+        <textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER} + " dari " + $V{PAGE_COUNT}]]></textFieldExpression>
+      </textField>
+    </band>
+  </pageFooter>
+  <summary>
+    <band height="30" splitType="Stretch">
+      <textField>
+        <reportElement x="0" y="8" width="555" height="14" forecolor="#666666"/>
+        <textElement><font fontName="SansSerif" size="9" isItalic="true"/></textElement>
+        <textFieldExpression><![CDATA["Total: " + $V{REPORT_COUNT} + " item"]]></textFieldExpression>
+      </textField>
+    </band>
+  </summary>
+
+</jasperReport>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="hasil_apriori" language="java"
+              pageWidth="595" pageHeight="842"
+              columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20">
+
+  <parameter name="TOKO_NAMA"      class="java.lang.String">
+    <defaultValueExpression><![CDATA["Stadela Coffee"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="MIN_SUPPORT"    class="java.lang.String">
+    <defaultValueExpression><![CDATA["-"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="MIN_CONFIDENCE" class="java.lang.String">
+    <defaultValueExpression><![CDATA["-"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="PERIODE"        class="java.lang.String">
+    <defaultValueExpression><![CDATA["Semua periode"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="TOTAL_TRANSAKSI" class="java.lang.Integer">
+    <defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+  </parameter>
+
+  <field name="antecedent"    class="java.lang.String"/>
+  <field name="consequent"    class="java.lang.String"/>
+  <field name="supportPct"    class="java.lang.Float"/>
+  <field name="confidencePct" class="java.lang.Float"/>
+  <field name="lift"          class="java.lang.Float"/>
+
+  <title>
+    <band height="120" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="555" height="66" backcolor="#2C3E50" mode="Opaque" forecolor="#2C3E50"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="12" y="8" width="531" height="28" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="18" isBold="true"/></textElement>
+        <text><![CDATA[HASIL ANALISIS APRIORI]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="12" y="36" width="531" height="14" forecolor="#AABBCC"/>
+        <textElement><font fontName="SansSerif" size="10"/></textElement>
+        <textFieldExpression><![CDATA[$P{TOKO_NAMA}]]></textFieldExpression>
+      </textField>
+      <textField pattern="dd MMMM yyyy, HH:mm">
+        <reportElement x="12" y="72" width="531" height="12"/>
+        <textElement><font fontName="SansSerif" size="8" isItalic="true"/></textElement>
+        <textFieldExpression><![CDATA["Dicetak: " + new java.util.Date()]]></textFieldExpression>
+      </textField>
+      <!-- Parameter box -->
+      <rectangle>
+        <reportElement x="0" y="86" width="555" height="32" backcolor="#F8F9FA" mode="Opaque" forecolor="#DDDDDD"/>
+      </rectangle>
+      <textField>
+        <reportElement x="8" y="91" width="555" height="12"/>
+        <textElement><font fontName="SansSerif" size="8"/></textElement>
+        <textFieldExpression><![CDATA["Min. Support: " + $P{MIN_SUPPORT} + "   |   Min. Confidence: " + $P{MIN_CONFIDENCE} + "   |   Periode: " + $P{PERIODE} + "   |   Total Transaksi: " + $P{TOTAL_TRANSAKSI}]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+
+  <columnHeader>
+    <band height="24" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="555" height="24" backcolor="#2C3E50" mode="Opaque" forecolor="#2C3E50"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="0" y="5" width="25" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[#]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="25" y="5" width="165" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Antecedent (Jika)]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="190" y="5" width="20" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[→]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="210" y="5" width="160" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Consequent (Maka)]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="370" y="5" width="60" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Support]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="430" y="5" width="65" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Confidence]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="495" y="5" width="55" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Lift]]></text>
+      </staticText>
+    </band>
+  </columnHeader>
+
+  <detail>
+    <band height="22" splitType="Stretch">
+      <textField>
+        <reportElement x="0" y="3" width="25" height="14"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+      </textField>
+      <textField isStretchWithOverflow="true">
+        <reportElement x="25" y="3" width="165" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{antecedent}]]></textFieldExpression>
+      </textField>
+      <staticText>
+        <reportElement x="190" y="3" width="20" height="14"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9"/></textElement>
+        <text><![CDATA[→]]></text>
+      </staticText>
+      <textField isStretchWithOverflow="true">
+        <reportElement x="210" y="3" width="160" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{consequent}]]></textFieldExpression>
+      </textField>
+      <textField pattern="0.00">
+        <reportElement x="370" y="3" width="60" height="14"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{supportPct}]]></textFieldExpression>
+      </textField>
+      <textField pattern="0.00">
+        <reportElement x="430" y="3" width="65" height="14"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{confidencePct}]]></textFieldExpression>
+      </textField>
+      <textField pattern="0.000">
+        <reportElement x="495" y="3" width="55" height="14"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{lift}]]></textFieldExpression>
+      </textField>
+      <line>
+        <reportElement x="0" y="21" width="555" height="1" forecolor="#E0E0E0"/>
+      </line>
+    </band>
+  </detail>
+
+
+  <pageFooter>
+    <band height="18">
+      <textField>
+        <reportElement x="0" y="4" width="555" height="12" forecolor="#888888"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="8"/></textElement>
+        <textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER} + " dari " + $V{PAGE_COUNT}]]></textFieldExpression>
+      </textField>
+    </band>
+  </pageFooter>
+  <noData>
+    <band height="40">
+      <staticText>
+        <reportElement x="0" y="10" width="555" height="20" forecolor="#888888"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="11" isItalic="true"/></textElement>
+        <text><![CDATA[Tidak ada association rule yang memenuhi threshold.]]></text>
+      </staticText>
+    </band>
+  </noData>
+
+  <summary>
+    <band height="30">
+      <textField>
+        <reportElement x="0" y="8" width="555" height="14" forecolor="#666666"/>
+        <textElement><font fontName="SansSerif" size="9" isItalic="true"/></textElement>
+        <textFieldExpression><![CDATA["Total rules: " + $V{REPORT_COUNT}]]></textFieldExpression>
+      </textField>
+    </band>
+  </summary>
+
+</jasperReport>

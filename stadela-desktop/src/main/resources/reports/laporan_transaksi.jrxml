@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="laporan_transaksi" language="java"
+              pageWidth="595" pageHeight="842"
+              columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20">
+
+  <parameter name="TOKO_NAMA" class="java.lang.String">
+    <defaultValueExpression><![CDATA["Stadela Coffee"]]></defaultValueExpression>
+  </parameter>
+
+  <field name="kodeTransaksi"    class="java.lang.String"/>
+  <field name="namaUser"         class="java.lang.String"/>
+  <field name="tanggalTransaksi" class="java.sql.Date"/>
+  <field name="total"            class="java.math.BigDecimal"/>
+
+  <variable name="TOTAL_SUM" class="java.math.BigDecimal" calculation="Sum">
+    <variableExpression><![CDATA[$F{total}]]></variableExpression>
+    <initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+  </variable>
+
+  <title>
+    <band height="86" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="555" height="66" backcolor="#2C3E50" mode="Opaque" forecolor="#2C3E50"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="12" y="8" width="531" height="28" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="18" isBold="true"/></textElement>
+        <text><![CDATA[LAPORAN PENJUALAN]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="12" y="36" width="531" height="14" forecolor="#AABBCC"/>
+        <textElement><font fontName="SansSerif" size="10"/></textElement>
+        <textFieldExpression><![CDATA[$P{TOKO_NAMA}]]></textFieldExpression>
+      </textField>
+      <textField pattern="dd MMMM yyyy, HH:mm">
+        <reportElement x="12" y="72" width="531" height="12"/>
+        <textElement><font fontName="SansSerif" size="8" isItalic="true"/></textElement>
+        <textFieldExpression><![CDATA["Dicetak: " + new java.util.Date()]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+
+  <columnHeader>
+    <band height="24" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="555" height="24" backcolor="#2C3E50" mode="Opaque" forecolor="#2C3E50"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="0" y="5" width="30" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[#]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="30" y="5" width="110" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Kode Transaksi]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="140" y="5" width="110" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Kasir]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="250" y="5" width="105" height="14" forecolor="#FFFFFF"/>
+        <textElement><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Tanggal]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="355" y="5" width="196" height="14" forecolor="#FFFFFF"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+        <text><![CDATA[Total]]></text>
+      </staticText>
+    </band>
+  </columnHeader>
+
+  <detail>
+    <band height="20" splitType="Stretch">
+      <textField>
+        <reportElement x="0" y="2" width="30" height="14"/>
+        <textElement textAlignment="Center"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="30" y="2" width="110" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{kodeTransaksi}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="140" y="2" width="110" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{namaUser} != null ? $F{namaUser} : "-"]]></textFieldExpression>
+      </textField>
+      <textField pattern="dd/MM/yyyy">
+        <reportElement x="250" y="2" width="105" height="14"/>
+        <textElement><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{tanggalTransaksi}]]></textFieldExpression>
+      </textField>
+      <textField pattern="Rp #,##0">
+        <reportElement x="355" y="2" width="196" height="14"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="9"/></textElement>
+        <textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+      </textField>
+      <line>
+        <reportElement x="0" y="19" width="555" height="1" forecolor="#E0E0E0"/>
+      </line>
+    </band>
+  </detail>
+
+
+  <pageFooter>
+    <band height="18">
+      <textField>
+        <reportElement x="0" y="4" width="555" height="12" forecolor="#888888"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="8"/></textElement>
+        <textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER} + " dari " + $V{PAGE_COUNT}]]></textFieldExpression>
+      </textField>
+    </band>
+  </pageFooter>
+  <summary>
+    <band height="44" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="8" width="555" height="32" backcolor="#F0F4F0" mode="Opaque" forecolor="#F0F4F0"/>
+      </rectangle>
+      <staticText>
+        <reportElement x="12" y="17" width="250" height="14"/>
+        <textElement><font fontName="SansSerif" size="10" isBold="true"/></textElement>
+        <text><![CDATA[TOTAL PENDAPATAN]]></text>
+      </staticText>
+      <textField pattern="Rp #,##0">
+        <reportElement x="355" y="17" width="188" height="14" forecolor="#27AE60"/>
+        <textElement textAlignment="Right"><font fontName="SansSerif" size="10" isBold="true"/></textElement>
+        <textFieldExpression><![CDATA[$V{TOTAL_SUM}]]></textFieldExpression>
+      </textField>
+    </band>
+  </summary>
+
+</jasperReport>
